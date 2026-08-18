@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Forge — Home Workout Log</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- AUTH SCREEN -->
+  <section id="auth-screen" class="screen">
+    <div class="auth-card">
+      <div class="brand">
+        <span class="brand-mark">◆</span>
+        <h1>FORGE</h1>
+        <p class="tag">Push. Pull. Legs. Every day, logged.</p>
+      </div>
+
+      <div class="auth-tabs">
+        <button class="tab-btn active" data-tab="login">Log in</button>
+        <button class="tab-btn" data-tab="register">Create account</button>
+      </div>
+
+      <form id="login-form" class="auth-form">
+        <label>Username
+          <input type="text" id="login-username" autocomplete="username" required />
+        </label>
+        <label>Password
+          <input type="password" id="login-password" autocomplete="current-password" required />
+        </label>
+        <button type="submit" class="primary-btn">Log in</button>
+        <p class="form-error" id="login-error"></p>
+      </form>
+
+      <form id="register-form" class="auth-form hidden">
+        <label>Choose a username
+          <input type="text" id="register-username" autocomplete="username" required minlength="3" />
+        </label>
+        <label>Choose a password
+          <input type="password" id="register-password" autocomplete="new-password" required minlength="6" />
+        </label>
+        <p class="hint">At least 6 characters. Only you will ever see your data.</p>
+        <button type="submit" class="primary-btn">Create account</button>
+        <p class="form-error" id="register-error"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- APP SCREEN -->
+  <section id="app-screen" class="screen hidden">
+    <header class="topbar">
+      <div class="brand-mini"><span class="brand-mark">◆</span> FORGE</div>
+      <div class="topbar-right">
+        <span id="username-display"></span>
+        <button id="logout-btn" class="ghost-btn">Log out</button>
+      </div>
+    </header>
+
+    <nav class="main-tabs">
+      <button class="main-tab-btn active" data-view="today-view">Today</button>
+      <button class="main-tab-btn" data-view="groups-view">Groups</button>
+    </nav>
+
+    <main class="dashboard" id="today-view">
+
+      <!-- Streak track -->
+      <section class="panel streak-panel">
+        <div class="streak-header">
+          <div>
+            <span class="streak-count" id="streak-count">0</span>
+            <span class="streak-label">day streak</span>
+          </div>
+          <div class="badge-count" id="badge-count-wrap">
+            <span id="badge-count">0</span> weekly badges
+          </div>
+        </div>
+        <div class="streak-track" id="streak-track"></div>
+      </section>
+
+      <!-- Today's workout -->
+      <section class="panel today-panel">
+        <div class="today-header">
+          <div>
+            <span class="today-day" id="today-day">—</span>
+            <h2 id="today-title">Loading…</h2>
+          </div>
+          <span class="status-pill" id="status-pill">—</span>
+        </div>
+
+        <div id="rest-day-message" class="rest-message hidden">
+          Rest day. Recovery is part of the program — stretch, walk, or just take it easy.
+        </div>
+
+        <ul class="exercise-list" id="exercise-list"></ul>
+
+        <div class="today-actions">
+          <button id="complete-btn" class="primary-btn wide">Mark today complete</button>
+          <button id="open-customize-btn" class="ghost-btn wide">Customize today's workout</button>
+        </div>
+      </section>
+
+      <!-- Calendar -->
+      <section class="panel calendar-panel">
+        <h3>Last 5 weeks</h3>
+        <div class="calendar-grid" id="calendar-grid"></div>
+        <div class="legend">
+          <span><i class="dot done"></i> completed</span>
+          <span><i class="dot missed"></i> missed</span>
+          <span><i class="dot rest"></i> rest day</span>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- CUSTOMIZE OVERLAY -->
+    <div id="customize-overlay" class="overlay hidden">
+      <div class="overlay-card">
+        <div class="overlay-header">
+          <h2>Customize today's workout</h2>
+          <button id="close-customize-btn" class="ghost-btn">Close</button>
+        </div>
+        <p class="hint">Pick any muscle groups you want to train today — mix and match freely.</p>
+        <div class="group-chips" id="group-chips"></div>
+        <div id="custom-exercise-picker"></div>
+        <div class="overlay-actions">
+          <button id="reset-custom-btn" class="ghost-btn">Reset to default schedule</button>
+          <button id="save-custom-btn" class="primary-btn">Save today's workout</button>
+        </div>
+        <p class="form-error" id="customize-error"></p>
+      </div>
+    </div>
+
+    <!-- GROUPS VIEW -->
+    <main class="dashboard hidden" id="groups-view">
+      <section class="panel" id="groups-list-panel">
+        <h3>Your groups</h3>
+        <div id="groups-list"></div>
+
+        <div class="group-forms">
+          <form id="create-group-form" class="inline-form">
+            <input type="text" id="new-group-name" placeholder="New group name" required />
+            <button type="submit" class="primary-btn">Create</button>
+          </form>
+          <form id="join-group-form" class="inline-form">
+            <input type="text" id="join-group-code" placeholder="Invite code" required />
+            <button type="submit" class="ghost-btn">Join</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Open group: chat + leaderboard -->
+      <section class="panel hidden" id="group-detail-panel">
+        <div class="group-detail-header">
+          <button id="back-to-groups-btn" class="ghost-btn">← Groups</button>
+          <div>
+            <h3 id="group-detail-name">—</h3>
+            <span class="hint" id="group-invite-display"></span>
+          </div>
+        </div>
+
+        <div class="group-tabs">
+          <button class="group-tab-btn active" data-gtab="chat">Chat</button>
+          <button class="group-tab-btn" data-gtab="leaderboard">Leaderboard</button>
+        </div>
+
+        <div id="group-chat-tab">
+          <div class="chat-messages" id="chat-messages"></div>
+          <form id="chat-form" class="chat-input-row">
+            <input type="text" id="chat-text" placeholder="Say something…" autocomplete="off" />
+            <label class="photo-btn" for="chat-image">📷</label>
+            <input type="file" id="chat-image" accept="image/*" class="hidden" />
+            <button type="submit" class="primary-btn">Send</button>
+          </form>
+          <p class="hint" id="chat-image-name"></p>
+        </div>
+
+        <div id="group-leaderboard-tab" class="hidden">
+          <div id="leaderboard-list"></div>
+        </div>
+      </section>
+    </main>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>
